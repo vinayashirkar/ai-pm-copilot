@@ -1,0 +1,39 @@
+{
+  "name": "ai-pm-copilot",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "@supabase/ssr": "^0.5.2",
+    "@supabase/supabase-js": "^2.46.2",
+    "groq-sdk": "^0.9.1",
+    "next": "15.0.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "mammoth": "^1.8.0",
+    "pdf-parse": "^1.1.1",
+    "docx": "^9.0.2",
+    "date-fns": "^4.1.0",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^2.5.5",
+    "lucide-react": "^0.468.0",
+    "resend": "^4.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/pdf-parse": "^1.1.4",
+    "eslint": "^9",
+    "eslint-config-next": "15.0.4",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  }
+}

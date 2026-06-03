@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand-50:  #EBF3FA;
+  --brand-100: #D0E4F5;
+  --brand-500: #2E75B6;
+  --brand-700: #1F497D;
+}
+
+body {
+  @apply bg-gray-50 text-gray-900;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { @apply bg-gray-100; }
+::-webkit-scrollbar-thumb { @apply bg-gray-300 rounded-full; }
+
+/* Animations */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.fade-in { animation: fadeIn 0.25s ease-out; }
+
+/* Diff viewer */
+.diff-added   { @apply bg-green-50 border-l-4 border-green-400 px-3 py-1; }
+.diff-removed { @apply bg-red-50 border-l-4 border-red-400 px-3 py-1 line-through text-gray-400; }
