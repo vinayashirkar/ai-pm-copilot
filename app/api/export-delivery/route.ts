@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
 
     // Generate work item hierarchy using Gemini
     const storyResults = stories.map(s => ({
-      code: s.code, role: s.role, action: s.action, benefit: s.benefit, acceptanceCriteria: [],
+      code: s.code, role: s.role, action: s.action, benefit: s.benefit, acceptanceCriteria: [] as Array<{ given: string; when: string; then: string }>,
     }))
 
     const workItems = await generateWorkItems(
@@ -81,7 +81,7 @@ export async function POST(req: NextRequest) {
 
     for (const item of workItems) await saveItem(item, null)
 
-    // ── Export to requested format ─────────────────────────────────────────────
+    // ââ Export to requested format âââââââââââââââââââââââââââââââââââââââââââââ
 
     if (format === 'jira_csv') {
       // Jira-compatible CSV
