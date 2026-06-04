@@ -1,8 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: ['pdf-parse', 'mammoth'],
-  },
+    serverExternalPackages: ['pdf-parse', 'mammoth'],
 };
 
 export default nextConfig;
