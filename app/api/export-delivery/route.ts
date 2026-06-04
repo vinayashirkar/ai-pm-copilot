@@ -7,7 +7,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase/server'
-import { generateWorkItems } from '@/lib/gemini'
+import { generateWorkItems, type UserStoryResult } from '@/lib/gemini'
 
 export async function POST(req: NextRequest) {
   try {
@@ -40,8 +40,9 @@ export async function POST(req: NextRequest) {
     }
 
     // Generate work item hierarchy using Gemini
-    const storyResults = stories.map(s => ({
-      code: s.code, role: s.role, action: s.action, benefit: s.benefit, acceptanceCriteria: [] as Array<{ given: string; when: string; then: string }>,
+    const storyResults: UserStoryResult[] = stories!.map(s => ({
+      code: s.code, role: s.role, action: s.action, benefit: s.benefit, acceptanceCriteria: [],
+    } as UserStoryResult
     }))
 
     const workItems = await generateWorkItems(
@@ -81,7 +82,7 @@ export async function POST(req: NextRequest) {
 
     for (const item of workItems) await saveItem(item, null)
 
-    // ââ Export to requested format âââââââââââââââââââââââââââââââââââââââââââââ
+    // Ã¢ÂÂÃ¢ÂÂ Export to requested format Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 
     if (format === 'jira_csv') {
       // Jira-compatible CSV
