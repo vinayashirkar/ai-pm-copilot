@@ -54,7 +54,7 @@ export interface WorkItem {
 
 export type UserStoryResultType = UserStoryResult
 
-export async function processMeetingTranscript(transcript: string, projectContext: string): Promise<MOMResult> {
+export async function processMeetingTranscript(transcript: string, projectContext: string, projectCode: string): Promise<MOMResult> {
     const prompt = `You are a senior product manager. Analyze this meeting transcript and extract a structured MOM.\n\nProject context: ${projectContext}\n\nTranscript:\n${transcript}\n\nReturn ONLY valid JSON:\n{"meetingTitle":"string","date":"string","attendees":[],"agenda":[],"decisions":[{"id":"D-1","description":"string","owner":"string"}],"actionItems":[{"id":"AI-1","description":"string","owner":"string","dueDate":"string"}],"risks":[{"id":"R-1","description":"string","impact":"High","mitigation":"string"}],"assumptions":[],"dependencies":[],"openIssues":[]}`
     const result = await model.generateContent(prompt)
     return safeParseJson<MOMResult>(result.response.text(), { meetingTitle: 'Untitled', date: new Date().toISOString().split('T')[0], attendees: [], agenda: [], decisions: [], actionItems: [], risks: [], assumptions: [], dependencies: [], openIssues: [] })
