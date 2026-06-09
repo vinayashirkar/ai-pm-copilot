@@ -6,21 +6,31 @@
  */
 
 
+
+
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { safeParseJson } from './parsers'
+
+
 
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
 
 
+
+
 // Use Flash for speed + cost; switch to "gemini-2.0-flash-exp" for higher accuracy
 const model = genAI.getGenerativeModel({
-  model: 'gemini-2.0-flash',h
+  model: 'gemini-2.0-flash'
   generationConfig: { temperature: 0.2, maxOutputTokens: 8192 },
 })
 
 
+
+
 // ── TYPE DEFINITIONS ─────────────────────────────────────────────────────────
+
+
 
 
 export interface MOMResult {
@@ -34,10 +44,3 @@ export interface MOMResult {
   assumptions: string[]
   dependencies: string[]
   openIssues: string[]
-  requirements: Array<{ code: string; description: string; type: string }>
-  summary: string
-}
-
-
-export interface ChangeDetection {
-
