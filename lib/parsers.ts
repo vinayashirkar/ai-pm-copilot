@@ -30,8 +30,6 @@ async function extractFromDocx(file: File): Promise<string> {
 }
 
 async function extractFromPdf(file: File): Promise<string> {
-  // For server-side PDF parsing — client sends file to /api/parse-file
-  // This is called server-side from the API route
   const pdfParse = (await import('pdf-parse')).default
   const buffer = Buffer.from(await file.arrayBuffer())
   const data = await pdfParse(buffer)
@@ -45,7 +43,6 @@ export function chunkText(text: string, maxChars = 12000): string[] {
   let start = 0
   while (start < text.length) {
     let end = start + maxChars
-    // Try to break at a paragraph boundary
     const nearEnd = text.lastIndexOf('\n\n', end)
     if (nearEnd > start + maxChars * 0.5) end = nearEnd
     chunks.push(text.slice(start, end).trim())
@@ -59,14 +56,29 @@ export function generateCode(prefix: string, existingCount: number): string {
   return `${prefix}-${String(existingCount + 1).padStart(3, '0')}`
 }
 
-// Safely parse JSON from AI response (handles markdown code fences)
+// Safely parse JSON from AI response (handles markdown code fences and extra text)
 export function safeParseJson<T>(text: string): T {
-  const clean = text
+  // Strip markdown code fences
+  let clean = text
     .replace(/```json\s*/gi, '')
     .replace(/```\s*/g, '')
     .trim()
-  const start = clean.indexOf('{') !== -1 ? clean.indexOf('{') : clean.indexOf('[')
-  const end = clean.lastIndexOf('}') !== -1 ? clean.lastIndexOf('}') : clean.lastIndexOf(']')
-  if (start === -1 || end === -1) throw new Error('No JSON found in AI response')
+
+  // Find the outermost JSON object or array
+  const objStart = clean.indexOf('{')
+  const arrStart = clean.indexOf('[')
+  let start = -1
+
+  if (objStart === -1 && arrStart === -1) throw new Error('No JSON found in AI response')
+
+  if (objStart === -1) start = arrStart
+  else if (arrStart === -1) start = objStart
+  else start = Math.min(objStart, arrStart)
+
+  const isArray = start === arrStart && (objStart === -1 || arrStart < objStart)
+  const end = isArray ? clean.lastIndexOf(']') : clean.lastIndexOf('}')
+
+  if (end === -1 || end < start) throw new Error('Malformed JSON in AI response')
+
   return JSON.parse(clean.slice(start, end + 1)) as T
 }
