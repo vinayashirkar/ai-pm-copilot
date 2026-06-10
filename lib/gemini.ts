@@ -3,7 +3,7 @@ import { safeParseJson } from './parsers'
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
 const model = genAI.getGenerativeModel({
-  model: 'gemini-1.5-flash-latest',
+  model: 'gemini-1.0-pro',
   generationConfig: { temperature: 0.2, maxOutputTokens: 8192 },
 })
 
